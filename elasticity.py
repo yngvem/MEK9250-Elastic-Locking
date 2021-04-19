@@ -7,43 +7,82 @@ from fenics import (
 from elasticity_tools import get_true_solution, epsilon, print_error, plot_comparison
 
 
-mesh = pde.UnitSquareMesh(32, 32)
-P2 = pde.VectorElement("CG", mesh.ufl_cell(), 2)
+def get_solution_with_pressure(mesh, mu, lambda_, f, true_solution):
 
-V = pde.FunctionSpace(mesh, P2)
-soln_space = pde.VectorFunctionSpace(mesh, "CG", 4)
-soln = get_true_solution(mesh)
+    P2 = pde.VectorElement("CG", mesh.ufl_cell(), 2)
+    P1 = pde.FiniteElement("CG", mesh.ufl_cell(), 1)
+    TH = pde.MixedElement([P2, P1])
 
+    V = pde.FunctionSpace(mesh, TH)
+
+    u, p = pde.TrialFunctions(V)
+    v, q = pde.TestFunctions(V)
+
+    a = (
+        2*mu*inner(epsilon(u), epsilon(v))*dx + p*div(v)*dx 
+        - q * div(u) * dx                     + (1/lambda_) * p*q*dx
+    )
+    L = -inner(f, v) * dx
+    bcs = pde.DirichletBC(V.sub(0), pde.project(true_solution, V.sub(0).collapse()), "on_boundary")
+
+    u_lu = pde.Function(V)
+    A, b = pde.assemble_system(a, L, bcs=bcs)
+
+    # Solve with LU
+    solver = pde.LUSolver()
+    solver.set_operator(A)
+    solver.solve(u_lu.vector(), b)
+
+    return u_lu.split()[0]
+
+def get_solution_without_pressure(mesh, mu, lambda_, f, true_solution):
+
+    P2 = pde.VectorElement("CG", mesh.ufl_cell(), 2)
+
+    V = pde.FunctionSpace(mesh, P2)
+
+    u = pde.TrialFunction(V)
+    v = pde.TestFunction(V)
+
+    a = (
+        2*mu*inner(epsilon(u), epsilon(v))*dx + lambda_*div(u)*div(v)*dx
+    )
+    L = -inner(f, v) * dx
+    bcs = pde.DirichletBC(V, true_solution, "on_boundary")
+
+    u_lu = pde.Function(V)
+    A, b = pde.assemble_system(a, L, bcs=bcs)
+
+    # Solve with LU
+    solver = pde.LUSolver()
+    solver.set_operator(A)
+    solver.solve(u_lu.vector(), b)
+
+    return u_lu
+
+N = 8
+print(f"h = 1/{N}: ")
+mesh = pde.UnitSquareMesh(N, N)
+
+solution_space = pde.VectorFunctionSpace(mesh, "CG", 4)
+true_solution = get_true_solution(mesh)
+    
 mu = pde.Constant(1)
-lambda_ = pde.Constant(1e3)
-f = 2*mu*div(epsilon(soln)) + lambda_*grad(div(soln))
+lambda_ = pde.Constant(1E3)
+f = 2*mu*div(epsilon(true_solution)) + lambda_*grad(div(true_solution))
 
-u = pde.TrialFunction(V)
-v = pde.TestFunction(V)
+u_without_pressure = get_solution_without_pressure(mesh, mu, lambda_, f, true_solution)
+u_with_pressure = get_solution_with_pressure(mesh, mu, lambda_, f, true_solution)
 
-a = (
-    2*mu*inner(epsilon(u), epsilon(v))*dx + lambda_*div(u)*div(v)*dx
-)
-L = -inner(f, v) * dx
-bcs = pde.DirichletBC(V, soln, "on_boundary")
+# Paraview plots:
+# pde.File("u_without.pvd") << u_without_pressure
+# pde.File("u_with.pvd") << u_with_pressure
 
-u_lu = pde.Function(V)
-u_amg = pde.Function(V)
-A, b = pde.assemble_system(a, L, bcs=bcs)
+print("Without pressure: ")
+print_error(u_without_pressure, true_solution, solution_space)
+print("With pressure: ")
+print_error(u_with_pressure, true_solution, solution_space)
 
-# Solve with LU
-solver = pde.LUSolver()
-solver.set_operator(A)
-solver.solve(u_lu.vector(), b)
-print_error(u_lu, soln, soln_space)
-
-
-# Solve with AMG
-solver = pde.KrylovSolver('cg', 'amg')
-solver.set_operator(A)
-solver.solve(u_amg.vector(), b)
-print("AMG-L2", pde.errornorm(u_amg, pde.project(soln, soln_space), "L2"))
-print("AMG-H1", pde.errornorm(u_amg, pde.project(soln, soln_space), "H1"), flush=True)
-
-plot_comparison(u_lu, u_amg, true_solution)
-plt.show()
+# Comparison plot
+plot_comparison(u_without_pressure, u_with_pressure, true_solution)
+plt.savefig(f"comparison_h_1_over_{N}.png", dpi=300)

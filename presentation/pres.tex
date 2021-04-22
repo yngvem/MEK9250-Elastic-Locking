@@ -20,22 +20,53 @@
     \begin{itemize}
         \item $-2\mu\nabla \cdot \epsilon(u) + \lambda \nabla(\nabla\cdot u) = f$
     \end{itemize}
+    \item $u$ is the unknown we want to find it is a deformation field
+\end{itemize}
+}
+\frame{
+\frametitle{Simplest form}
+\begin{itemize}
+    \item Homogenous Dirichlet conditions
+    \item Elasticity equation is:
+        \begin{align*}
+            -2\mu\nabla\cdot\epsilon(u) - \lambda\nabla\nabla\cdot u &= f \text{ in }\Omega,\\
+            u &= 0 \text{ on } \partial\Omega\\
+        \end{align*}
 \end{itemize}
 }
 \frame{
 \frametitle{Weak form}
-
+Find $u \in H_0^1$ such that
 \begin{align*}
-    &-\mu\int_{\Omega} (\nabla\cdot\epsilon(u))\cdot v \dx 
+    &a(u, v) = f(v), \forall v\in H_0^1&&\\
+    &\text{Multiply by test function and integrate:}&&\\
+    &-2\mu\int_{\Omega} (\nabla\cdot\epsilon(u))\cdot v \dx 
     - \lambda\int_{\Omega}\nabla(\nabla\cdot u)\cdot v \dx &&= \int_{\Omega}f\cdot v \dx\\
     &\text{ Integration by parts: }\\
-    &\mu\int_{\Omega}\epsilon(u)\cdot \nabla v \dx 
+    &2\mu\int_{\Omega}\epsilon(u)\cdot \nabla v \dx 
     + \lambda\int_{\Omega}(\nabla\cdot u)(\nabla\cdot v) \dx &&= \int_{\Omega}f\cdot v \dx\\
     &\text{$A:B = A:B_S$}\\
-    &\mu\int_{\Omega}\epsilon(u)\cdot \epsilon(v) \dx 
+    &2\mu\int_{\Omega}\epsilon(u)\cdot \epsilon(v) \dx 
     + \lambda\int_{\Omega}(\nabla\cdot u)(\nabla\cdot v) \dx &&= \int_{\Omega}f\cdot v \dx\\
 \end{align*}
+}
+\frame{
+\frametitle{Weak form cont.}
+This results in an equation on the form:
+\begin{align*}
+    a(u,v) &= 2\mu(\epsilon(u), \epsilon(v)) + \lambda(\nabla\cdot u, \nabla\cdot v),\\
+    f(v) &= (f,v)
+\end{align*}
+}
 
+\frame{
+\frametitle{Helmholz decomposition theorem}
+\begin{itemize}
+    \item Any field $L^2$ or $H^1$ can be decomposed into sum of a gradient and a curl
+    \item $u = \nabla\phi + \nabla\times\psi$
+    \item $\phi$, irrotational
+    \item $\psi$, solenoidal
+\end{itemize}
 }
 
 \end{document}

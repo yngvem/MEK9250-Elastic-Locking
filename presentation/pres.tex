@@ -1,0 +1,41 @@
+
+\documentclass{beamer}
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+
+\newcommand\dx{\text{dx}}
+\begin{document}
+\title{Locking}
+\author{Yngve Mardal Moe, Åshild Telle \& Roar Emaus}
+\date{\today}
+\frame{\titlepage}
+
+\section{Intro}
+\frame{
+\frametitle{Linear elasticity}
+\begin{itemize}
+    \item Linear elasticity is a model of how solid objects deform
+    \item Equation from Newton's second law and Hook's Law
+    \begin{itemize}
+        \item $-2\mu\nabla \cdot \epsilon(u) + \lambda \nabla(\nabla\cdot u) = f$
+    \end{itemize}
+\end{itemize}
+}
+\frame{
+\frametitle{Weak form}
+
+\begin{align*}
+    &-\mu\int_{\Omega} (\nabla\cdot\epsilon(u))\cdot v \dx 
+    - \lambda\int_{\Omega}\nabla(\nabla\cdot u)\cdot v \dx &&= \int_{\Omega}f\cdot v \dx\\
+    &\text{ Integration by parts: }\\
+    &\mu\int_{\Omega}\epsilon(u)\cdot \nabla v \dx 
+    + \lambda\int_{\Omega}(\nabla\cdot u)(\nabla\cdot v) \dx &&= \int_{\Omega}f\cdot v \dx\\
+    &\text{$A:B = A:B_S$}\\
+    &\mu\int_{\Omega}\epsilon(u)\cdot \epsilon(v) \dx 
+    + \lambda\int_{\Omega}(\nabla\cdot u)(\nabla\cdot v) \dx &&= \int_{\Omega}f\cdot v \dx\\
+\end{align*}
+
+}
+
+\end{document}

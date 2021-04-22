@@ -1,11 +1,12 @@
 import fenics as pde
 import matplotlib.pyplot as plt
 import numpy as np
+from collections import defaultdict
 
 from fenics import (
     sin, pi, inner, nabla_grad, grad, div, dx, sym
 )
-from elasticity_tools import get_true_solution, epsilon, plot_comparison
+from elasticity_tools import get_true_solution, epsilon, plot_spatial_comparison, plot_error
 
 def get_solution_with_pressure(mesh, mu, lambda_, f, true_solution):
 
@@ -60,45 +61,40 @@ def get_solution_without_pressure(mesh, mu, lambda_, f, true_solution):
 
     return u_lu
 
-N_values = [8, 16, 32, 64]
-errors = {"without pressure" :
-              {"L2" : [], "H1" : []},
-          "with pressure" :
-              {"L2" : [], "H1" : []}}
+N_values = [8, 16, 32, 64, 128]
+
+errors = defaultdict(lambda: defaultdict(lambda: (defaultdict(list))))
+
+mu = pde.Constant(1)
+lambda_ = pde.Constant(0)
+lambda_values = [1E1, 1E2, 1E3, 1E4, 1E5, 1E6, 1E7, 1E8]
 
 for N in N_values:
-    mesh = pde.UnitSquareMesh(N, N)
+    for lambda_value in lambda_values:
+        lambda_.assign(lambda_value)
+        mesh = pde.UnitSquareMesh(N, N)
 
-    solution_space = pde.VectorFunctionSpace(mesh, "CG", 4)
-    true_solution = get_true_solution(mesh)
-    true_solution_proj = pde.project(true_solution, solution_space)
-        
-    mu = pde.Constant(1)
-    lambda_ = pde.Constant(1E3)
-    f = 2*mu*div(epsilon(true_solution)) + lambda_*grad(div(true_solution))
+        solution_space = pde.VectorFunctionSpace(mesh, "CG", 4)
+        true_solution = get_true_solution(mesh)
+        true_solution_proj = pde.project(true_solution, solution_space)
+            
+        f = 2*mu*div(epsilon(true_solution)) + lambda_*grad(div(true_solution))
 
-    u_without_pressure = get_solution_without_pressure(mesh, mu, lambda_, f, true_solution)
-    u_with_pressure = get_solution_with_pressure(mesh, mu, lambda_, f, true_solution)
+        u_without_pressure = get_solution_without_pressure(mesh, mu, lambda_, f, true_solution)
+        u_with_pressure = get_solution_with_pressure(mesh, mu, lambda_, f, true_solution)
 
-    # Paraview plots:
-    # pde.File("u_without.pvd") << u_without_pressure
-    # pde.File("u_with.pvd") << u_with_pressure
- 
-    for (label, u_) in zip(["without pressure", "with pressure"], [u_without_pressure, u_with_pressure]):
-        for norm in ["L2", "H1"]:
-            errors[label][norm].append(pde.errornorm(u_, true_solution_proj, norm))
-    
-    # Spatial plots
-    plot_comparison(u_without_pressure, u_with_pressure, true_solution)
-    plt.savefig(f"comparison_h_1_over_{N}.png", dpi=300)
+        # Paraview plots:
+        # pde.File("u_without.pvd") << u_without_pressure
+        # pde.File("u_with.pvd") << u_with_pressure
+     
+        for (label, u_) in zip(["without pressure", "with pressure"], [u_without_pressure, u_with_pressure]):
+            for norm in ["L2", "H1"]:
+                error_norm = pde.errornorm(u_, true_solution_proj, norm)
+                fun_norm = pde.norm(true_solution_proj, norm)
+                errors[N][label][norm].append(error_norm/fun_norm)
 
-# calculate approximated error rates
-for label in ["without pressure", "with pressure"]:
-    for norm in ["L2", "H1"]:
-        print(errors[label][norm])
-        err = np.array(errors[label][norm])
-        rate = np.mean(err[1:]/err[:-1])
-        print(label, norm, ":")
-        print(" - errors: ", errors[label][norm])
-        print(" - rate: ", rate)
+        # Spatial plots, not sure what we want to present here?
+        #plot_spatial_comparison(u_without_pressure, u_with_pressure, true_solution)
+        #plt.savefig(f"comparison_h_1_over_{N}_lambda_{lambda_value}.png", dpi=300)
 
+plot_error(lambda_values, N_values, errors)

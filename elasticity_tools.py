@@ -21,9 +21,9 @@ def get_true_solution(mesh):
 def calculate_error(u_, soln, soln_space, norm):
     return pde.errornorm(u_, pde.project(soln, soln_space), norm)
 
-def plot_comparison(u_without_pressure, u_with_pressure, true_solution):
+def plot_spatial_comparison(u_without_pressure, u_with_pressure, true_solution):
 
-    plt.figure(figsize=(15, 9)) #, constrained_layout=True)
+    plt.figure(figsize=(15, 9))
 
     norm = LogNorm(vmin=1E-8, vmax=1E-2)
     current_cmap = matplotlib.cm.get_cmap()
@@ -54,3 +54,29 @@ def plot_comparison(u_without_pressure, u_with_pressure, true_solution):
 
     divider = make_axes_locatable(plt.gca())
     plt.colorbar(c, cax=divider.append_axes("right", size="5%", pad=0.15))
+
+
+
+def plot_error(lambda_values, N_values, errors):
+    
+    fig, axes = plt.subplots(2, 2, sharey="row", sharex=True)
+
+    latex_norm = {"L2" : r"$L_2$", "H1" : r"$H_1$"}
+
+    for (i, norm) in enumerate(["L2", "H1"]):
+        for (j, label) in enumerate(["without pressure", "with pressure"]):
+            for N in N_values:
+                err = errors[N][label][norm]
+                axes[i][j].plot(lambda_values, err, label=f"h: 1/{N}")
+            
+            axes[i][j].set_yscale("log")
+            axes[i][j].set_xscale("log")
+
+            axes[0][j].set_title(label.capitalize())
+            axes[1][j].set_xlabel(r"$\lambda$")
+        axes[i][0].set_ylabel(latex_norm[norm])
+    
+    axes[0][1].legend(loc=1, bbox_to_anchor=[1.6, 1.0])
+    plt.tight_layout()
+    plt.savefig("errors_norms_schemes.png", dpi=300)
+    plt.show()

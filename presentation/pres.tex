@@ -4,6 +4,7 @@
 \usepackage{amsmath}
 \usepackage{amssymb}
 
+\newcommand\dx{\text{dx}}
 \begin{document}
 \title{Locking}
 \author{Yngve Mardal Moe, Åshild Telle \& Roar Emaus}
@@ -17,16 +18,22 @@
     \item Linear elasticity is a model of how solid objects deform
     \item Equation from Newton's second law and Hook's Law
     \begin{itemize}
-        \item $\nabla \cdot (2\mu\epsilon(u) + \lambda (\nabla\cdot u)\delta) = f$
+        \item $-2\mu\nabla \cdot \epsilon(u) + \lambda \nabla(\nabla\cdot u) = f$
     \end{itemize}
 \end{itemize}
 }
 \frame{
-\frametitle{}
+\frametitle{Variational form}
 
 \begin{align*}
-    -\mu\Delta u - \lambda\nabla\nabla\cdot u &= f &&\text{ in } \Omega,&&& \\
-    u &= u_{\text{analytical}} &&\text{ on } \partial\Omega&&&
+    &-\mu\int_{\Omega} (\nabla\cdot\epsilon(u))\cdot v \dx 
+    - \lambda\int_{\Omega}\nabla(\nabla\cdot u)\cdot v \dx &&= \int_{\Omega}f\cdot v \dx\\
+    &\text{ Integration by parts: }\\
+    &\mu\int_{\Omega}\epsilon(u)\cdot \nabla v \dx 
+    + \lambda\int_{\Omega}(\nabla\cdot u)(\nabla\cdot v) \dx &&= \int_{\Omega}f\cdot v \dx\\
+    &\text{$A:B = A:B_S$}\\
+    &\mu\int_{\Omega}\epsilon(u)\cdot \epsilon(v) \dx 
+    + \lambda\int_{\Omega}(\nabla\cdot u)(\nabla\cdot v) \dx &&= \int_{\Omega}f\cdot v \dx\\
 \end{align*}
 
 }

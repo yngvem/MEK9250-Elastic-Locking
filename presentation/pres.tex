@@ -43,7 +43,7 @@
     &\text{ Integration by parts: }\\
     &2\mu\int_{\Omega}\epsilon(u)\cdot \nabla v \dx 
     + \lambda\int_{\Omega}(\nabla\cdot u)(\nabla\cdot v) \dx &&= \int_{\Omega}f\cdot v \dx\\
-    &A:B = A:B_S \text{ if } A = A^T\\
+    &A:B = A:B_S \text{ if } A = A^T\text{:}\\
     &2\mu\int_{\Omega}\epsilon(u)\cdot \epsilon(v) \dx 
     + \lambda\int_{\Omega}(\nabla\cdot u)(\nabla\cdot v) \dx &&= \int_{\Omega}f\cdot v \dx\\
 \end{align*}
@@ -57,6 +57,13 @@ Find $u \in H_0^1$ such that
     a(u,v) &= 2\mu(\epsilon(u), \epsilon(v)) + \lambda(\nabla\cdot u, \nabla\cdot v),\\
     f(v) &= (f,v)
 \end{align*}
+}
+\frame{
+\frametitle{Locking}
+\begin{itemize}
+    \item Locking arises from numerical errors when $\lambda \ll \mu$
+    \item 
+\end{itemize}
 }
 
 \frame{
@@ -80,7 +87,9 @@ New equation is then:
     -\mu\Delta u - \nabla p &= f,\\
     \nabla\cdot u - \frac{1}{\lambda}p &= 0\\
 \end{align*}
-As material becomes incompressible $\lambda -> \infty$
+As material becomes incompressible, $\lambda \rightarrow \infty$, the equations becomes
+the Stokes problem as $\frac{1}{\lambda} \rightarrow 0$
 }
+
 
 \end{document}

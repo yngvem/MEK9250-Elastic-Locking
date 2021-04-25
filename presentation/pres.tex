@@ -16,11 +16,18 @@
 \frametitle{Linear elasticity}
 \begin{itemize}
     \item Linear elasticity is a model of how solid objects deform
-    \item Equation from Newton's second law and Hook's Law
+    \item Equation from Hook's Law
     \begin{itemize}
         \item $-2\mu\nabla \cdot \epsilon(u) + \lambda \nabla(\nabla\cdot u) = f$
     \end{itemize}
-    \item $u$ is the unknown we want to find it is a deformation field
+    \item $u$ is the deformation field we want to find
+    \item $\lambda$ and $\mu$ are the material-dependent Lam\`e parameters
+        \begin{itemize}
+            \item Loosly said:
+            \item $\lambda$ is tied to compressibility
+            \item $\mu$ is tied to deformability
+        \end{itemize}
+    \item $\epsilon$ is the symmetric gradient
 \end{itemize}
 }
 \frame{
@@ -61,20 +68,20 @@ Find $u \in H_0^1$ such that
 \frame{
 \frametitle{Locking}
 \begin{itemize}
-    \item Locking arises from numerical errors when $\lambda \ll \mu$
-    \item 
+    \item Locking arises from numerical errors when $\lambda \gg \mu$
+    \item Difficulty in optimizing both $\nabla (u - u_h)$ and $\nabla\cdot (u - u_h) = 0$ at the same time
 \end{itemize}
 }
 
-\frame{
-\frametitle{Helmholz decomposition theorem}
-\begin{itemize}
-    \item Any field $L^2$ or $H^1$ can be decomposed into sum of a gradient and a curl
-    \item $u = \nabla\phi + \nabla\times\psi$
-    \item $\phi$, irrotational
-    \item $\psi$, solenoidal
-\end{itemize}
-}
+%\frame{
+%\frametitle{Helmholz decomposition theorem}
+%\begin{itemize}
+%    \item Any field $L^2$ or $H^1$ can be decomposed into sum of a gradient and a curl
+%    \item $u = \nabla\phi + \nabla\times\psi$
+%    \item $\phi$, irrotational
+%    \item $\psi$, solenoidal
+%\end{itemize}
+%}
 
 \frame{
 \frametitle{Medicinal pressure}
@@ -87,9 +94,31 @@ New equation is then:
     -\mu\Delta u - \nabla p &= f,\\
     \nabla\cdot u - \frac{1}{\lambda}p &= 0\\
 \end{align*}
+
 As material becomes incompressible, $\lambda \rightarrow \infty$, the equations becomes
 the Stokes problem as $\frac{1}{\lambda} \rightarrow 0$
 }
 
+\frame{
+\frametitle{Weak form}
+Find $u \in H^1_0$ and $p \in L^2$ such that
+\begin{align*}
+    a(u,v) + b(p,v) &= f &&\forall v \in H^1\\
+    b(u, q) - c(p, q) &= 0 &&\forall q \in \mathbb{R}\\
+\end{align*}
+}
+\frame{
+\frametitle{Weak form contd.}
+Where:
+\begin{align*}
+    a(u,v) &= (\epsilon(u), \epsilon(v))\\
+    b(p,v) &= (p, \nabla\cdot v)\\
+    b(u,q) &= (\nabla\cdot u, q)\\
+    c(p,q) &= \frac{1}{\lambda}(p\cdot q)\\
+\end{align*}
+}
 
+\frame{
+\frametitle{}
+}
 \end{document}

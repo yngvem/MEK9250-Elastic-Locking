@@ -2,6 +2,7 @@
 \documentclass{beamer}
 
 \usepackage{amsmath}
+\usepackage{amsfonts}
 \usepackage{amssymb}
 
 \newcommand\dx{\text{dx}}
@@ -71,6 +72,18 @@ Find $u \in H_0^1$ such that
     \item Locking arises from numerical errors when $\lambda \gg \mu$
     \item Difficulty in optimizing both $\nabla (u - u_h)$ and $\nabla\cdot (u - u_h) = 0$ at the same time
 \end{itemize}
+}
+\frame{
+\frametitle{Locking from a optimisation standpoint}
+Solving the elasticity equation with the finite element method is equivalent to solving
+\begin{align}
+	\min_{u_h \in U_h} \|u - u_h\|_a^2 = \min_{u_h \in U_h} \|\nabla (u - u_h)\|_{L^2}^2 + \lambda \| \nabla \cdot (u - u_h) \|_{L^2}^2.
+\end{align}
+To understand locking, we let \(\lambda \to \infty\) and obtain
+\begin{align}
+	\min_{u_h \in U_h} & \|\nabla (u - u_h)\|_{L^2}^2 \nonumber \\
+	\text{s.t.}~ & (\nabla \cdot (u - u_h), v_h) = 0 \qquad \text{for all}~v_h \in U_h.
+\end{align}
 }
 
 %\frame{

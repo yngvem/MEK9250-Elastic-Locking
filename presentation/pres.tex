@@ -121,13 +121,18 @@ the Stokes problem as $\frac{1}{\lambda} \rightarrow 0$
 \frametitle{Weak form}
 Find $u \in H^1_0$ and $p \in L^2$ such that
 \begin{align*}
-    a(u, v) + b(p, v) &= f &&\forall v \in H^1\\
-    b(q, u) - c(p, q) &= 0 &&\forall q \in \mathbb{R}\\
+    a(u,v) + b(p,v) &= f &&\forall v \in H^1\\
+    b(u, q) - c(p, q) &= 0 &&\forall q \in \mathbb{R}\\
 \end{align*}
-where 
+}
+
+\frame{
+\frametitle{Weak form contd.}
+Where:
 \begin{align*}
     a(u,v) &= (\epsilon(u), \epsilon(v))\\
     b(p,v) &= (p, \nabla\cdot v)\\
+    b(u,q) &= (\nabla\cdot u, q)\\
     c(p,q) &= \frac{1}{\lambda}(p\cdot q)\\
 \end{align*}
 }
@@ -157,6 +162,34 @@ where
 \frametitle{Relative Error CG-2}
 \begin{figure}
     \includegraphics[width=1.0\textwidth]{plots/errors_norms_schemes_order_2.pdf}
+\end{figure}
+}
+
+\frame{
+\frametitle{Spatial plot of u, $\lambda = 10$ without solid pressure}
+\begin{figure}
+    \includegraphics[width=1.0\textwidth]{plots/lambda_10_without.pdf}
+\end{figure}
+}
+
+\frame{
+\frametitle{Spatial plot of u, $\lambda = 10$ with solid pressure}
+\begin{figure}
+    \includegraphics[width=1.0\textwidth]{plots/lambda_10_with.pdf}
+\end{figure}
+}
+
+\frame{
+\frametitle{Spatial plot of u, $\lambda = 10^{12}$, without solid pressure}
+\begin{figure}
+    \includegraphics[width=1.0\textwidth]{plots/lambda_1e12_without.pdf}
+\end{figure}
+}
+
+\frame{
+\frametitle{Spatial plot of u, $\lambda = 10^{12}$, with solid pressure}
+\begin{figure}
+    \includegraphics[width=1.0\textwidth]{plots/lambda_1e12_with.pdf}
 \end{figure}
 }
 

@@ -17,7 +17,7 @@
 \frametitle{Linear elasticity}
 \begin{itemize}
     \item Linear elasticity is a model of how solid objects deform
-    \item Equation from Hook's Law
+    \item Equation from Hook's Law (small deformations, isotropic media)
     \begin{itemize}
         \item $-2\mu\nabla \cdot \epsilon(u) + \lambda \nabla(\nabla\cdot u) = f$
     \end{itemize}
@@ -31,6 +31,7 @@
     \item $\epsilon$ is the symmetric gradient
 \end{itemize}
 }
+
 \frame{
 \frametitle{Simplest form}
 \begin{itemize}
@@ -42,6 +43,7 @@
         \end{align*}
 \end{itemize}
 }
+
 \frame{
 \frametitle{Weak form}
 \begin{align*}
@@ -56,6 +58,7 @@
     + \lambda\int_{\Omega}(\nabla\cdot u)(\nabla\cdot v) \dx &&= \int_{\Omega}f\cdot v \dx\\
 \end{align*}
 }
+
 \frame{
 \frametitle{Weak form cont.}
 Find $u \in H_0^1$ such that
@@ -66,6 +69,7 @@ Find $u \in H_0^1$ such that
     f(v) &= (f,v)
 \end{align*}
 }
+
 \frame{
 \frametitle{Locking}
 \begin{itemize}
@@ -73,8 +77,9 @@ Find $u \in H_0^1$ such that
     \item Difficulty in optimizing both $\nabla (u - u_h)$ and $\nabla\cdot (u - u_h) = 0$ at the same time
 \end{itemize}
 }
+
 \frame{
-\frametitle{Locking from a optimisation standpoint}
+\frametitle{Locking from an optimisation standpoint}
 Solving the elasticity equation with the finite element method is equivalent to solving
 \begin{align}
 	\min_{u_h \in U_h} \|u - u_h\|_a^2 = \min_{u_h \in U_h} \|\nabla (u - u_h)\|_{L^2}^2 + \lambda \| \nabla \cdot (u - u_h) \|_{L^2}^2.
@@ -120,6 +125,7 @@ Find $u \in H^1_0$ and $p \in L^2$ such that
     b(u, q) - c(p, q) &= 0 &&\forall q \in \mathbb{R}\\
 \end{align*}
 }
+
 \frame{
 \frametitle{Weak form contd.}
 Where:

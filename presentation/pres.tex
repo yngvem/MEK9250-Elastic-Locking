@@ -133,6 +133,16 @@ where
 }
 
 \frame{
+\frametitle{Weak form}
+The above equation is equivalent to solving the sadle point problem
+\begin{align*}
+	\max_{p \in Q_h} \min_{u \in V_h} a(u, u) + b(p, u) - \lambda^{-1} (p, p),
+\end{align*}
+where \(\lambda^{-1}\) works as a regulariser which means that we can circumvent the inf-sup condition.
+}
+
+
+\frame{
 \frametitle{Deformation domains}
 \begin{figure}
     \includegraphics[width=1.0\textwidth]{plots/deformation_domains.pdf}

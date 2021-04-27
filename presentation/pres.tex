@@ -1,4 +1,3 @@
-
 \documentclass{beamer}
 
 \usepackage{amsmath}
@@ -102,41 +101,38 @@ To understand locking, we let \(\lambda \to \infty\) and obtain
 %}
 
 \frame{
-\frametitle{Medicinal pressure}
-\begin{itemize}
-    \item Introduce solid pressure $p$
-    \item $p = \lambda\nabla\cdot u$
-\end{itemize}
-New equation is then:
+\frametitle{We can introduce a solid pressure, \(p\), to circumvent locking}
+We introduce the solid pressure variable
+\begin{equation}
+p = \lambda\nabla\cdot u,
+\end{equation}
+which, when used in the linear elastic equations becomes
 \begin{align*}
     -\mu\Delta u - \nabla p &= f,\\
-    \nabla\cdot u - \frac{1}{\lambda}p &= 0\\
+    \nabla\cdot u - \frac{1}{\lambda}p &= 0,\\
 \end{align*}
-
-As material becomes incompressible, $\lambda \rightarrow \infty$, the equations becomes
-the Stokes problem as $\frac{1}{\lambda} \rightarrow 0$
+which, as \(\lambda \to \infty\) becomes Stokes equation.
 }
 
 \frame{
-\frametitle{Weak form}
+\frametitle{We want to use the finite element method and need the weak form}
 Find $u \in H^1_0$ and $p \in L^2$ such that
 \begin{align*}
-    a(u,v) + b(p,v) &= f &&\forall v \in H^1\\
+	a(u,v) + b(p,v) &= (f, v) &&\forall v \in H^1\\
     b(q, u) - c(p, q) &= 0 &&\forall q \in \mathbb{R}\\
 \end{align*}
 where
 \begin{align*}
     a(u,v) &= (\epsilon(u), \epsilon(v))\\
     b(p,v) &= (p, \nabla\cdot v)\\
-    c(p,q) &= \frac{1}{\lambda}(p\cdot q)\\
+    c(p,q) &= \frac{1}{\lambda}(p, q)\\
 \end{align*}
 }
-
 \frame{
-\frametitle{Saddle point interpretation of the two-field formulation}
-The above equation is equivalent to solving the sadle point problem
+\frametitle{To understand why \(c\) is stabilising, we use the saddle point formulation}
+Solving the weak form of the two-field linear elastic equations is equivalent to solving the sadle point problem
 \begin{align*}
-	\max_{p \in Q_h} \min_{u \in V_h} a(u, u) + b(p, u) - \lambda^{-1} (p, p),
+	\max_{p \in Q_h}~\min_{u \in V_h} \{\rlap{$\overbrace{\phantom{a(u, u) - (f, u) + b(p, u)}}^\text{Bounded below}$}a(u, u) - (f, u) + \underbrace{b(p, u) - \lambda^{-1}(p, p)}_\text{Bounded above}\}
 \end{align*}
 where \(\lambda^{-1}\) works as a regulariser which means that we can circumvent the inf-sup condition.
 }

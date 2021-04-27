@@ -122,19 +122,23 @@ the Stokes problem as $\frac{1}{\lambda} \rightarrow 0$
 Find $u \in H^1_0$ and $p \in L^2$ such that
 \begin{align*}
     a(u,v) + b(p,v) &= f &&\forall v \in H^1\\
-    b(u, q) - c(p, q) &= 0 &&\forall q \in \mathbb{R}\\
+    b(q, u) - c(p, q) &= 0 &&\forall q \in \mathbb{R}\\
+\end{align*}
+where
+\begin{align*}
+    a(u,v) &= (\epsilon(u), \epsilon(v))\\
+    b(p,v) &= (p, \nabla\cdot v)\\
+    c(p,q) &= \frac{1}{\lambda}(p\cdot q)\\
 \end{align*}
 }
 
 \frame{
-\frametitle{Weak form contd.}
-Where:
+\frametitle{Saddle point interpretation of the two-field formulation}
+The above equation is equivalent to solving the sadle point problem
 \begin{align*}
-    a(u,v) &= (\epsilon(u), \epsilon(v))\\
-    b(p,v) &= (p, \nabla\cdot v)\\
-    b(u,q) &= (\nabla\cdot u, q)\\
-    c(p,q) &= \frac{1}{\lambda}(p\cdot q)\\
+	\max_{p \in Q_h} \min_{u \in V_h} a(u, u) + b(p, u) - \lambda^{-1} (p, p),
 \end{align*}
+where \(\lambda^{-1}\) works as a regulariser which means that we can circumvent the inf-sup condition.
 }
 
 \frame{

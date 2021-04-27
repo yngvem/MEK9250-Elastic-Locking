@@ -11,7 +11,7 @@ def epsilon(x):
 
 def get_true_solution(mesh):
     x = pde.SpatialCoordinate(mesh)
-    stream_function = sin(x[0]*x[1]*pi)
+    stream_function = 0.01*sin(3*x[0]*x[1]*pi)
     soln = pde.as_vector((
           stream_function.dx(1),
         - stream_function.dx(0)
@@ -57,8 +57,8 @@ def plot_spatial_comparison(u_without_pressure, u_with_pressure, true_solution):
 
 
 
-def plot_error(lambda_values, N_values, errors):
-    
+def plot_error(lambda_values, N_values, p2_order, errors):
+
     fig, axes = plt.subplots(2, 2, sharey="row", sharex=True)
 
     latex_norm = {"L2" : r"$L_2$", "H1" : r"$H_1$"}
@@ -78,5 +78,5 @@ def plot_error(lambda_values, N_values, errors):
     
     axes[0][1].legend(loc=1, bbox_to_anchor=[1.6, 1.0])
     plt.tight_layout()
-    plt.savefig("errors_norms_schemes.png", dpi=300)
+    plt.savefig(f"errors_norms_schemes_order_{p2_order}.pdf", dpi=300)
     plt.show()

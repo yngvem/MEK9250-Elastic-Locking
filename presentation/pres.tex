@@ -15,7 +15,7 @@
 \frame{
 \frametitle{Linear elasticity}
 \begin{itemize}
-    \item Linear elasticity is a model of how solid objects deform
+    \item Linear elasticity is a model of how objects deform
     \item Equation from Hook's Law (small deformations, isotropic media)
     \begin{itemize}
         \item $-2\mu\nabla \cdot \epsilon(u) + \lambda \nabla(\nabla\cdot u) = f$
@@ -81,7 +81,7 @@ Find $u \in H_0^1$ such that
 \frametitle{Locking from an optimisation standpoint}
 Solving the elasticity equation with the finite element method is equivalent to solving
 \begin{align}
-	\min_{u_h \in U_h} \|u - u_h\|_a^2 = \min_{u_h \in U_h} \|\nabla (u - u_h)\|_{L^2}^2 + \lambda \| \nabla \cdot (u - u_h) \|_{L^2}^2.
+    \min_{u_h \in U_h} \|u - u_h\|_a^2 = \min_{u_h \in U_h} \left(\|\nabla (u - u_h)\|_{L^2}^2 + \lambda \| \nabla \cdot (u - u_h) \|_{L^2}^2\right).
 \end{align}
 To understand locking, we let \(\lambda \to \infty\) and obtain
 \begin{align}
@@ -176,6 +176,20 @@ where \(\lambda^{-1}\) works as a regulariser which means that we can circumvent
 \frametitle{Spatial plot of u, $\lambda = 10$ with solid pressure}
 \begin{figure}
     \includegraphics[width=1.0\textwidth]{plots/lambda_10_with.pdf}
+\end{figure}
+}
+    
+\frame{
+\frametitle{Spatial plot of u, $\lambda = 10^{6}$, without solid pressure}
+\begin{figure}
+    \includegraphics[width=1.0\textwidth]{plots/lambda_1e6_without.pdf}
+\end{figure}
+}
+
+\frame{
+\frametitle{Spatial plot of u, $\lambda = 10^{6}$, with solid pressure}
+\begin{figure}
+    \includegraphics[width=1.0\textwidth]{plots/lambda_1e6_with.pdf}
 \end{figure}
 }
 

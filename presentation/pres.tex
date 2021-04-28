@@ -130,7 +130,7 @@ where
 }
 \frame{
 \frametitle{To understand why \(c\) is stabilising, we use the saddle point formulation}
-Solving the weak form of the two-field linear elastic equations is equivalent to solving the sadle point problem
+Solving the weak form of the two-field linear elastic equations is equivalent to solving the saddle point problem
 \begin{align*}
 	\max_{p \in Q_h}~\min_{u \in V_h} \{\rlap{$\overbrace{\phantom{a(u, u) - (f, u) + b(p, u)}}^\text{Bounded below}$}a(u, u) - (f, u) + \underbrace{b(p, u) - \lambda^{-1}(p, p)}_\text{Bounded above}\}
 \end{align*}
@@ -152,14 +152,14 @@ where \(\lambda^{-1}\) works as a regulariser which means that we can circumvent
 }
 
 \frame{
-\frametitle{Relative Error CG-1}
+\frametitle{Relative Error, both u and p in CG-1}
 \begin{figure}
     \includegraphics[width=1.0\textwidth]{plots/errors_norms_schemes_order_1.pdf}
 \end{figure}
 }
 
 \frame{
-\frametitle{Relative Error CG-2}
+\frametitle{Relative Error, u in CG-2 and p in CG-1}
 \begin{figure}
     \includegraphics[width=1.0\textwidth]{plots/errors_norms_schemes_order_2.pdf}
 \end{figure}
@@ -194,20 +194,6 @@ where \(\lambda^{-1}\) works as a regulariser which means that we can circumvent
 }
 
 \frame{
-\frametitle{Spatial plot of u, $\lambda = 10^{6}$, without solid pressure}
-\begin{figure}
-    \includegraphics[width=1.0\textwidth]{plots/lambda_1e6_without.pdf}
-\end{figure}
-}
-
-\frame{
-\frametitle{Spatial plot of u, $\lambda = 10^{6}$, with solid pressure}
-\begin{figure}
-    \includegraphics[width=1.0\textwidth]{plots/lambda_1e6_with.pdf}
-\end{figure}
-}
-
-\frame{
 \frametitle{Spatial plot of u, $\lambda = 10^{12}$, without solid pressure}
 \begin{figure}
     \includegraphics[width=1.0\textwidth]{plots/lambda_1e12_without.pdf}
@@ -220,5 +206,14 @@ where \(\lambda^{-1}\) works as a regulariser which means that we can circumvent
     \includegraphics[width=1.0\textwidth]{plots/lambda_1e12_with.pdf}
 \end{figure}
 }
+
+\frame{
+\frametitle{Conclusions}
+If in doubt, use a solid pressure formulation.
+
+Code link?
+}
+
+
 
 \end{document}

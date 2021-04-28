@@ -20,25 +20,46 @@
     \begin{itemize}
         \item $-2\mu\nabla \cdot \epsilon(u) + \lambda \nabla(\nabla\cdot u) = f$
     \end{itemize}
+\end{itemize}
+}
+\frame{
+\frametitle{Linear elasticity}
+\begin{itemize}
+    \item Linear elasticity is a model of how objects deform
+    \item Equation from Hooke's Law (small deformations, isotropic media)
+    \begin{itemize}
+        \item $-2\mu\nabla \cdot \epsilon(u) + \lambda \nabla(\nabla\cdot u) = f$
+    \end{itemize}
     \item $u$ is the deformation field we want to find
+    \item $\epsilon$ is the symmetric gradient
+\end{itemize}
+}
+\frame{
+\frametitle{Linear elasticity}
+\begin{itemize}
+    \item Linear elasticity is a model of how objects deform
+    \item Equation from Hooke's Law (small deformations, isotropic media)
+    \begin{itemize}
+        \item $-2\mu\nabla \cdot \epsilon(u) + \lambda \nabla(\nabla\cdot u) = f$
+    \end{itemize}
+    \item $u$ is the deformation field we want to find
+    \item $\epsilon$ is the symmetric gradient
     \item $\lambda$ and $\mu$ are the material-dependent Lamé parameters
         \begin{itemize}
-            \item Loosly said:
             \item $\lambda$ is tied to compressibility, larger $\lambda$ means harder to change the volume ratio
-	    \item $\mu$ is tied to stiffness, larger $\mu$ means harder to deform keeping the same volume ratio
+	        \item $\mu$ is tied to stiffness, larger $\mu$ means harder to deform keeping the same volume ratio
         \end{itemize}
-    \item $\epsilon$ is the symmetric gradient
 \end{itemize}
 }
 
 \frame{
 \frametitle{Simplest form}
 \begin{itemize}
-    \item Homogenous Dirichlet boundary conditions
+    \item Dirichlet boundary conditions
     \item The elasticity equation is given by:
         \begin{align*}
             -2\mu\nabla\cdot\epsilon(u) - \lambda\nabla\nabla\cdot u &= f \text{ in }\Omega,\\
-            u &= 0 \text{ on } \partial\Omega\\
+            u &= g \text{ on } \partial\Omega\\
         \end{align*}
 \end{itemize}
 }
@@ -73,7 +94,12 @@ Find $u \in H_0^1$ such that
 \frametitle{Locking}
 \begin{itemize}
     \item Locking arises from numerical errors when $\lambda \gg \mu$
-    \item Difficulty in optimizing both $\nabla (u - u_h)$ and $\nabla\cdot (u - u_h) = 0$ at the same time
+    \item Difficulty in optimizing:
+        \begin{itemize}
+            \item $\nabla (u - u_h)$
+            \item $\nabla\cdot (u - u_h) = 0$
+        \end{itemize}
+        at the same time
 \end{itemize}
 }
 
@@ -81,12 +107,12 @@ Find $u \in H_0^1$ such that
 \frametitle{Locking from an optimisation standpoint}
 Solving the elasticity equation with the finite element method is equivalent to solving
 \begin{align}
-    \min_{u_h \in U_h} \|u - u_h\|_a^2 = \min_{u_h \in U_h} \left(\|\nabla (u - u_h)\|_{L^2}^2 + \lambda \| \nabla \cdot (u - u_h) \|_{L^2}^2\right).
+    \min_{u_h \in U_h} \|u - u_h\|_a^2 = \min_{u_h \in U_h} \left(\mu\|\nabla (u - u_h)\|_{L^2}^2 + \lambda \| \nabla \cdot (u - u_h) \|_{L^2}^2\right).
 \end{align}
 To understand locking, we let \(\lambda \to \infty\) and obtain
 \begin{align}
 	\min_{u_h \in U_h} & \|\nabla (u - u_h)\|_{L^2}^2 \nonumber \\
-	\text{s.t.}~ & (\nabla \cdot (u - u_h), v_h) = 0 \qquad \text{for all}~v_h \in U_h.
+	\text{s.t.}~ & (\nabla \cdot (u - u_h), \nabla\cdot v_h) = 0 \qquad \text{for all}~v_h \in U_h.
 \end{align}
 }
 
@@ -132,7 +158,7 @@ where
 \frametitle{To understand why \(c\) is stabilising, we use the saddle point formulation}
 Solving the weak form of the two-field linear elastic equations is equivalent to solving the saddle point problem
 \begin{align*}
-	\max_{p \in Q_h}~\min_{u \in V_h} \{\rlap{$\overbrace{\phantom{a(u, u) - (f, u) + b(p, u)}}^\text{Bounded below}$}a(u, u) - (f, u) + \underbrace{b(p, u) - \lambda^{-1}(p, p)}_\text{Bounded above}\}
+    \max_{p \in Q_h}~\min_{u \in V_h} \{\rlap{$\overbrace{\phantom{a(u, u) - (f, u) + b(p, u)}}^\text{Bounded below}$}a(u, u) - (f, u) + \underbrace{b(p, u) - \frac{1}{\lambda}(p, p)}_\text{Bounded above}\}
 \end{align*}
 where \(\lambda^{-1}\) works as a regulariser which means that we can circumvent the inf-sup condition.
 }
@@ -224,7 +250,7 @@ implemented in FEniCS with assigned Dirichlet boundary conditions. Here the true
 \frametitle{Conclusions}
 If in doubt, use a solid pressure formulation.
 
-Code link?
+https://github.com/yngvem/MEK9250-Elastic-Locking
 }
 
 
